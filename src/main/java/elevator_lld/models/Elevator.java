@@ -1,27 +1,28 @@
 package elevator_lld.models;
 
 public class Elevator {
-  private int id; 
+  private static int idCounter = 0;
+  private int id;
   private State state;
   private int currentFloor;
   private InternalButtons internalButtons;
-  
+
   public Elevator(State state, int currentFloor, InternalButtons internalButtons) {
+    id = generateId();
     this.state = state;
     this.currentFloor = currentFloor;
     this.internalButtons = internalButtons;
   }
 
-  
+  // Private method to auto-generate an incrementing ID
+  private synchronized Integer generateId() {
+    return ++idCounter;
+  }
 
   // Getters and Setters
 
   public int getId() {
     return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
   }
 
   public State getState() {

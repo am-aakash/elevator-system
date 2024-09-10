@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Floor {
   private int floorNumber;
-  private List<State> statesAllowed;
+  private List<State> statesAllowed; // Up or Down
 
   public Floor(int floorNumber, List<State> statesAllowed) {
     this.floorNumber = floorNumber;
