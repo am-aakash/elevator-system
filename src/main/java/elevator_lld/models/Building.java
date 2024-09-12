@@ -3,12 +3,12 @@ package elevator_lld.models;
 import java.util.List;
 
 public class Building {
-  private static int idCounter = 0;
+  private static Integer idCounter = 0;
   private Integer id;
   private List<Floor> floors;
-  private List<String> elevators;
+  private List<Integer> elevators;
 
-  public Building(List<Floor> floors, List<String> elevators) {
+  public Building(List<Floor> floors, List<Integer> elevators) {
     this.id = generateId();
     this.floors = floors;
     this.elevators = elevators;
@@ -27,12 +27,20 @@ public class Building {
     this.floors = floors;
   }
 
-  public List<String> getElevators() {
+  public void addFloor(Floor floor) {
+    this.floors.add(floor);
+  }
+
+  public List<Integer> getElevators() {
     return elevators;
   }
 
-  public void setElevators(List<String> elevators) {
+  public void setElevators(List<Integer> elevators) {
     this.elevators = elevators;
+  }
+
+  public void addElevator(Integer elevator) {
+    this.elevators.add(elevator);
   }
 
   public Integer getId() {

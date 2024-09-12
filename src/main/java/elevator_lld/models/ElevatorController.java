@@ -4,17 +4,16 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 
 public class ElevatorController {
-  private int elevatorId;
-  private PriorityQueue<Integer> downMinHeap = new PriorityQueue<>(Collections.reverseOrder()); // 1, 3, 5
-                                                                                                // <----direction of
-                                                                                                // elevator
+  private Integer elevatorId;
+  private PriorityQueue<Integer> downMinHeap = new PriorityQueue<>(Collections.reverseOrder());
+  // 1, 3, 5 <----direction of elevator
   private PriorityQueue<Integer> upMaxHeap = new PriorityQueue<>(); // 5, 2, 1 <----direction of elevator
 
   public ElevatorController(Elevator elevator) {
     this.elevatorId = elevator.getId();
   }
 
-  public int getElevatorId() {
+  public Integer getElevatorId() {
     return elevatorId;
   }
 

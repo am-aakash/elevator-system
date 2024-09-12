@@ -29,30 +29,34 @@ public class ElevatorRepository {
   }
 
   // Provide controlled access methods to the collections
-  public static Elevator getElevator(Integer id) {
+  public Elevator getElevator(Integer id) {
     return elevators.get(id);
   }
 
-  public static Integer addElevator(Elevator elevator) {
+  public Integer addElevator(Elevator elevator) {
     elevators.put(elevator.getId(), elevator);
     return elevator.getId();
   }
 
-  public static ElevatorController getElevatorController(Integer id) {
+  public ElevatorController getElevatorController(Integer id) {
     return elevatorControllers.get(id);
   }
 
-  public static void addElevatorController(Integer id, ElevatorController controller) {
+  public void addElevatorController(Integer id, ElevatorController controller) {
     elevatorControllers.put(id, controller);
   }
 
-  public static Building getBuilding(Integer id) {
+  public Building getBuilding(Integer id) {
     return buildings.get(id);
   }
 
-  public static Integer addBuilding(Building building) {
+  public Integer addBuilding(Building building) {
     buildings.put(building.getId(), building);
     return building.getId();
+  }
+
+  public void addElevatorToBuilding(Integer buildingId, Elevator elevator) {
+    buildings.get(buildingId).addElevator(elevator.getId());
   }
 
 }

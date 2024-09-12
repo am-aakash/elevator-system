@@ -1,17 +1,19 @@
 package elevator_lld.models;
 
 public class Elevator {
-  private static int idCounter = 0;
-  private int id;
+  private static Integer idCounter = 0;
+  private Integer id;
   private State state;
-  private int currentFloor;
+  private Integer currentFloor;
   private InternalButtons internalButtons;
+  private boolean doorOpen;
 
-  public Elevator(State state, int currentFloor, InternalButtons internalButtons) {
+  public Elevator(State state, Integer currentFloor, InternalButtons internalButtons) {
     id = generateId();
     this.state = state;
     this.currentFloor = currentFloor;
     this.internalButtons = internalButtons;
+    this.doorOpen = false;
   }
 
   // Private method to auto-generate an incrementing ID
@@ -21,7 +23,7 @@ public class Elevator {
 
   // Getters and Setters
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
@@ -33,11 +35,11 @@ public class Elevator {
     this.state = state;
   }
 
-  public int getCurrentFloor() {
+  public Integer getCurrentFloor() {
     return currentFloor;
   }
 
-  public void setCurrentFloor(int currentFloor) {
+  public void setCurrentFloor(Integer currentFloor) {
     this.currentFloor = currentFloor;
   }
 
@@ -47,5 +49,13 @@ public class Elevator {
 
   public void setInternalButtons(InternalButtons internalButtons) {
     this.internalButtons = internalButtons;
+  }
+
+  public boolean isDoorOpen() {
+    return doorOpen;
+  }
+
+  public void setDoorOpen(boolean doorOpen) {
+    this.doorOpen = doorOpen;
   }
 }
