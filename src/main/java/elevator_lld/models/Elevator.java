@@ -58,4 +58,15 @@ public class Elevator {
   public void setDoorOpen(boolean doorOpen) {
     this.doorOpen = doorOpen;
   }
+
+  @Override
+  public String toString() {
+    return "Elevator{" +
+        "id=" + id +
+        ", state=" + state +
+        ", currentFloor=" + currentFloor +
+        ", internalButtons=" + internalButtons +
+        ", doorOpen=" + doorOpen +
+        '}';
+  }
 }

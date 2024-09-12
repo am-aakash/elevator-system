@@ -1,5 +1,6 @@
 package elevator_lld.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Building {
@@ -10,8 +11,8 @@ public class Building {
 
   public Building(List<Floor> floors, List<Integer> elevators) {
     this.id = generateId();
-    this.floors = floors;
-    this.elevators = elevators;
+    this.floors = new ArrayList<>(floors);
+    this.elevators = elevators != null ? new ArrayList<>(elevators) : new ArrayList<>();
   }
 
   // Private method to auto-generate an incrementing ID
@@ -24,7 +25,7 @@ public class Building {
   }
 
   public void setFloors(List<Floor> floors) {
-    this.floors = floors;
+    this.floors = new ArrayList<>(floors);
   }
 
   public void addFloor(Floor floor) {
@@ -36,7 +37,7 @@ public class Building {
   }
 
   public void setElevators(List<Integer> elevators) {
-    this.elevators = elevators;
+    this.elevators = new ArrayList<>(elevators);
   }
 
   public void addElevator(Integer elevator) {

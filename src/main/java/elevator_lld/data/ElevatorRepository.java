@@ -1,7 +1,10 @@
 package elevator_lld.data;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import elevator_lld.models.Building;
 import elevator_lld.models.Elevator;
@@ -31,6 +34,15 @@ public class ElevatorRepository {
   // Provide controlled access methods to the collections
   public Elevator getElevator(Integer id) {
     return elevators.get(id);
+  }
+
+  public List<Elevator> getElevators(Integer buildingId) {
+    return buildings.get(buildingId).getElevators().stream().map(elevators::get)
+        .collect(Collectors.toList());
+  }
+
+  public Set<Integer> getBuildings() {
+    return buildings.keySet();
   }
 
   public Integer addElevator(Elevator elevator) {

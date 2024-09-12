@@ -19,12 +19,19 @@ public class Main {
     public static void main(String[] args) {
         ElevatorService elevatorService = new ElevatorService();
 
+        // cron job
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(elevatorService::moveElevatorsCron, 0, 2, TimeUnit.SECONDS);
+        scheduler.scheduleWithFixedDelay(() -> {
+            try {
+                elevatorService.moveElevatorsCron();
+            } catch (Exception e) {
+                System.err.println("Error executing cron task: " + e.getMessage());
+            }
+        }, 1, 2, TimeUnit.SECONDS);
 
         // running code
-
         Building building1 = new Building(List.of(new Floor(-2, List.of(State.UP))), null);
+        elevatorService.addBuilding(building1);
         for (int i = -1; i < 100; i++) {
             building1.addFloor(new Floor(i, List.of(State.UP, State.DOWN)));
         }
@@ -34,5 +41,7 @@ public class Main {
             Set<Integer> floors = IntStream.rangeClosed(-2, 100 - (i - 1) * 10).boxed().collect(Collectors.toSet());
             elevatorService.addElevator(building1.getId(), new Elevator(State.IDLE, 0, new InternalButtons(floors)));
         }
+
+        // do operations using Thread.sleep()
     }
 }

@@ -13,14 +13,72 @@ public class ElevatorService {
   private DispatchService dispatchService = new DispatchService();
 
   public void moveElevatorsCron() {
-    // for each elevatorcontroller and the elevator
-    // move it acc to heaps and change state if heap is empty
-    // move only if door not open; If open close it
+
+    elevatorRepository.getBuildings().forEach(
+        buildingId -> {
+          // for each elevatorcontroller and the elevator
+          // move it acc to heaps and change state if heap is empty
+          // move only if door not open; If open close it
+          System.out.println(" ");
+          elevatorRepository.getElevators(buildingId).forEach(
+              elevator -> {
+                ElevatorController elevatorController = elevatorRepository.getElevatorController(elevator.getId());
+
+                if (elevator.getState().equals(State.IDLE) || elevator.getState().equals(State.NOT_WORKING)
+                    || (elevatorController.getDownMinHeap().isEmpty() && elevatorController.getUpMaxHeap().isEmpty())) {
+                  if (!elevator.getState().equals(State.NOT_WORKING)) {
+                    elevator.setState(State.IDLE);
+                  }
+                  NotifyService.notify("Idle at floor " + elevator.getCurrentFloor() + " elevator "
+                      + elevator.getId());
+                  // skip below cases
+                } else if (elevator.isDoorOpen()) {
+                  // close the door and skip other cases
+                  NotifyService.notify("The door is closing");
+                  elevator.setDoorOpen(false);
+                } else if (elevator.getState().equals(State.UP)) {
+                  if (!elevatorController.getUpMaxHeap().isEmpty()
+                      && elevatorController.getUpMaxHeap().peek() >= elevator.getCurrentFloor()) {
+                    // going up
+                    elevator.setCurrentFloor(elevatorController.popUpMaxHeap());
+                  } else {
+                    // going down if invalid
+                    elevatorController.getUpMaxHeap().clear();
+                    elevator.setCurrentFloor(elevatorController.popDownMinHeap());
+                  }
+
+                  // notify and open door for new floor
+                  NotifyService.notify("Reached floor " + elevator.getCurrentFloor() + " in elevator "
+                      + elevator.getId());
+                  openDoor(elevator.getId());
+
+                } else if (elevator.getState().equals(State.DOWN)) {
+                  if (!elevatorController.getDownMinHeap().isEmpty()
+                      && elevatorController.getDownMinHeap().peek() <= elevator.getCurrentFloor()) {
+                    // going down
+                    elevator.setCurrentFloor(elevatorController.popDownMinHeap());
+                  } else {
+                    // going up if invalid
+                    elevatorController.getDownMinHeap().clear();
+                    elevator.setCurrentFloor(elevatorController.popUpMaxHeap());
+                  }
+
+                  // notify and open door for new floor
+                  NotifyService.notify("Reached floor " + elevator.getCurrentFloor() + " in elevator "
+                      + elevator.getId());
+                  openDoor(elevator.getId());
+
+                }
+
+                elevatorRepository.addElevator(elevator);
+                elevatorRepository.addElevatorController(elevator.getId(), elevatorController);
+              });
+        });
   }
 
   public void addElevator(Integer buildingId, Elevator elevator) {
     elevatorRepository.addElevator(elevator);
-    elevatorRepository.addElevatorController(buildingId, new ElevatorController(elevator));
+    elevatorRepository.addElevatorController(elevator.getId(), new ElevatorController(elevator));
     elevatorRepository.getBuilding(buildingId).addElevator(elevator.getId());
     NotifyService.notify("Elevator added with id " + elevator.getId());
   }

@@ -7,7 +7,8 @@ public class ElevatorController {
   private Integer elevatorId;
   private PriorityQueue<Integer> downMinHeap = new PriorityQueue<>(Collections.reverseOrder());
   // 1, 3, 5 <----direction of elevator
-  private PriorityQueue<Integer> upMaxHeap = new PriorityQueue<>(); // 5, 2, 1 <----direction of elevator
+  private PriorityQueue<Integer> upMaxHeap = new PriorityQueue<>();
+  // 5, 2, 1 <----direction of elevator
 
   public ElevatorController(Elevator elevator) {
     this.elevatorId = elevator.getId();
@@ -22,7 +23,10 @@ public class ElevatorController {
   }
 
   public void addToDownMinHeap(Integer floor) {
-    this.downMinHeap.add(floor);
+    if (this.downMinHeap.contains(floor))
+      return;
+    else
+      this.downMinHeap.add(floor);
   }
 
   public Integer popDownMinHeap() {
@@ -37,7 +41,9 @@ public class ElevatorController {
     return upMaxHeap;
   }
 
-  public void setUpMaxHeap(Integer floor) {
+  public void addToUpMaxHeap(Integer floor) {
+    if (this.upMaxHeap.contains(floor))
+      return;
     this.upMaxHeap.add(floor);
   }
 
@@ -49,7 +55,20 @@ public class ElevatorController {
     return this.upMaxHeap.peek();
   }
 
-  void submitExternalRequest(Integer floor) {
+  public void setDownMinHeap(PriorityQueue<Integer> downMinHeap) {
+    this.downMinHeap = downMinHeap;
+  }
 
+  public void setUpMaxHeap(PriorityQueue<Integer> upMaxHeap) {
+    this.upMaxHeap = upMaxHeap;
+  }
+
+  @Override
+  public String toString() {
+    return "ElevatorController{" +
+        "elevatorId=" + elevatorId +
+        ", downMinHeap=" + downMinHeap +
+        ", upMaxHeap=" + upMaxHeap +
+        '}';
   }
 }
