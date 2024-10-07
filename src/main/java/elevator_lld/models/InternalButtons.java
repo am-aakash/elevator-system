@@ -1,5 +1,6 @@
 package elevator_lld.models;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class InternalButtons {
@@ -7,7 +8,8 @@ public class InternalButtons {
   Set<Integer> buttonsSelected;
 
   public InternalButtons(Set<Integer> totalFloors) {
-    this.totalFloors = totalFloors;
+    this.totalFloors = new HashSet<>(totalFloors);
+    this.buttonsSelected = new HashSet<>();
   }
 
   public Set<Integer> getTotalFloors() {

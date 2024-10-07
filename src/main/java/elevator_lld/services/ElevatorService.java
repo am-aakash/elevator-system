@@ -13,7 +13,6 @@ public class ElevatorService {
   private DispatchService dispatchService = new DispatchService();
 
   public void moveElevatorsCron() {
-
     elevatorRepository.getBuildings().forEach(
         buildingId -> {
           // for each elevatorcontroller and the elevator
@@ -79,6 +78,40 @@ public class ElevatorService {
   public void addElevator(Integer buildingId, Elevator elevator) {
     elevatorRepository.addElevator(elevator);
     elevatorRepository.addElevatorController(elevator.getId(), new ElevatorController(elevator));
+    // if (true) { // just to test
+    // ElevatorController c =
+    // elevatorRepository.getElevatorController(elevator.getId());
+    // if (elevator.getId() % 2 == 0) {
+    // elevator.setCurrentFloor(100);
+    // elevator.setState(State.DOWN);
+    // for (int i = -1; i < 15; i += 3) {
+    // c.addToDownMinHeap(i);
+    // }
+    // } else if (elevator.getId() % 3 == 0) {
+    // elevator.setCurrentFloor(-1);
+    // elevator.setState(State.UP);
+    // for (int i = -1; i < 20; i += 4) {
+    // c.addToUpMaxHeap(i);
+    // }
+    // }
+
+    // else if (elevator.getId() == 1) {
+    // elevator.setCurrentFloor(-1);
+    // elevator.setState(State.UP);
+    // for (int i = 0; i < 70; i += 10) {
+    // c.addToUpMaxHeap(i);
+    // }
+    // } else if (elevator.getId() == 5) {
+    // elevator.setCurrentFloor(-1);
+    // elevator.setState(State.UP);
+    // for (int i = 5; i < 20; i += 4) {
+    // c.addToUpMaxHeap(i);
+    // }
+    // }
+
+    // elevatorRepository.addElevator(elevator);
+    // elevatorRepository.addElevatorController(elevator.getId(), c);
+    // }
     elevatorRepository.getBuilding(buildingId).addElevator(elevator.getId());
     NotifyService.notify("Elevator added with id " + elevator.getId());
   }
@@ -92,9 +125,9 @@ public class ElevatorService {
     elevatorRepository.getElevator(elevatorId).setDoorOpen(true);
   }
 
-  public void callElevator(Floor floor, State state) {
+  public void callElevator(Integer buildingId, Floor floor, State state) {
     try {
-      NotifyService.notify(dispatchService.callElevator(floor, state));
+      NotifyService.notify(dispatchService.callElevator(buildingId, floor, state));
     } catch (Exception e) {
       NotifyService.notify(e.getMessage(), "error");
     }
